@@ -87,10 +87,17 @@ ds = env.add_source(kafka_consumer)
 
 from pyflink.common.typeinfo import Types
 
+
+
+def template_func(dv_obj):
+    json_obj = json.loads(dv_obj)
+    
+
+    return json.dumps(json_obj)
+
 unzip_ds = ds \
         ## ds.flat_map(lambda image: image.instance) \                        # flatted from message
-        .map(lambda a: cv2dv(a), Types.STRING())  \
-        .map(lambda b: item_map(b), Types.STRING())
+        .map(lambda a: template_func(a), Types.STRING())  
 
 ## TODO: batch window
 
